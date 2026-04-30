@@ -4,6 +4,8 @@ import { Phone, User, ShieldCheck, ArrowRight, Loader2, Globe, QrCode } from 'lu
 import { useLanguage } from '../context/LanguageContext';
 import './Login.css';
 
+const API_BASE = import.meta.env.PROD ? '' : `http://${window.location.hostname}:5000`;
+
 const Login = () => {
   const navigate = useNavigate();
   const { t, lang, setLang } = useLanguage();
@@ -32,7 +34,7 @@ const Login = () => {
 
     setLoading(true);
     try {
-      const res = await fetch(`http://${window.location.hostname}:5000/api/auth/send-otp`, {
+      const res = await fetch(`${API_BASE}/api/auth/send-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ mobile_number: mobile, name })
@@ -52,7 +54,7 @@ const Login = () => {
     if (!otp) return alert('Enter OTP');
     setLoading(true);
     try {
-      const res = await fetch(`http://${window.location.hostname}:5000/api/auth/verify-otp`, {
+      const res = await fetch(`${API_BASE}/api/auth/verify-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ mobile_number: mobile, otp })
@@ -74,7 +76,7 @@ const Login = () => {
   const handleAdminLogin = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`http://${window.location.hostname}:5000/api/auth/admin-login`, {
+      const res = await fetch(`${API_BASE}/api/auth/admin-login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })

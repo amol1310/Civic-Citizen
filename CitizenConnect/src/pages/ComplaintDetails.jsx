@@ -5,6 +5,8 @@ import { io } from 'socket.io-client';
 import { useLanguage } from '../context/LanguageContext';
 import './ComplaintDetails.css';
 
+const API_BASE = import.meta.env.PROD ? '' : `http://${window.location.hostname}:5000`;
+
 const ComplaintDetails = () => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -16,7 +18,7 @@ const ComplaintDetails = () => {
 
   useEffect(() => {
     fetchIssue();
-    const socket = io(`http://${window.location.hostname}:5000`);
+    const socket = io(API_BASE || '/');
     socket.on('status_updated', (data) => {
       if (data.id === id) fetchIssue();
     });
@@ -25,7 +27,7 @@ const ComplaintDetails = () => {
 
   const fetchIssue = async () => {
     try {
-      const res = await fetch(`http://${window.location.hostname}:5000/api/complaints/${id}`);
+      const res = await fetch(`${API_BASE}/api/complaints/${id}`);
       if (res.ok) setIssue(await res.json());
     } catch (error) { console.error(error); }
   };
@@ -35,7 +37,7 @@ const ComplaintDetails = () => {
     if (rating === 0) return alert('Select rating');
     setSubmittingFeedback(true);
     try {
-      const res = await fetch(`http://${window.location.hostname}:5000/api/users/feedback`, {
+      const res = await fetch(`${API_BASE}/api/users/feedback`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ complaintId: id, rating, comment })

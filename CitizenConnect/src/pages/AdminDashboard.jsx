@@ -28,6 +28,8 @@ import {
 } from 'recharts';
 import { QRCodeCanvas } from 'qrcode.react';
 
+const API_BASE = import.meta.env.PROD ? '' : `http://${window.location.hostname}:5000`;
+
 const AdminDashboard = () => {
   const navigate = useNavigate();
   const { t, lang, setLang } = useLanguage();
@@ -44,10 +46,11 @@ const AdminDashboard = () => {
 
   const COLORS = ['#6366f1', '#f59e0b', '#10b981', '#ef4444', '#8b5cf6', '#ec4899'];
   const STATUS_COLORS = {
-    'Submitted': '#6366f1',
-    'Assigned': '#8b5cf6',
-    'In Progress': '#f59e0b',
-    'Resolved': '#10b981'
+    'New': '#ef4444',
+    'Submitted': '#ef4444',
+    'Assigned': '#3b82f6',
+    'In Progress': '#eab308',
+    'Resolved': '#22c55e'
   };
 
   // Custom Markers
@@ -71,7 +74,7 @@ const AdminDashboard = () => {
     fetchIssues();
     fetchStats();
 
-    const socket = io(`http://${window.location.hostname}:5000`);
+    const socket = io(API_BASE || '/');
     socket.on('new_complaint', () => { fetchIssues(); fetchStats(); });
     socket.on('status_updated', () => { fetchIssues(); fetchStats(); });
     return () => socket.disconnect();
@@ -82,7 +85,7 @@ const AdminDashboard = () => {
     if (!token) return navigate('/');
 
     try {
-      const res = await fetch(`http://${window.location.hostname}:5000/api/complaints`, {
+      const res = await fetch(`${API_BASE}/api/complaints`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (res.status === 401 || res.status === 403) {
@@ -101,7 +104,7 @@ const AdminDashboard = () => {
     if (!token) return;
 
     try {
-      const res = await fetch(`http://${window.location.hostname}:5000/api/admin/stats`, {
+      const res = await fetch(`${API_BASE}/api/admin/stats`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (res.ok) setStats(await res.json());
@@ -121,25 +124,25 @@ const AdminDashboard = () => {
 
   const renderOverview = () => (
     <>
-      <section className="stats-strip">
-        <div className="stat-card-admin">
-          <h3>Total Complaints</h3>
-          <p>{stats.total}</p>
+      <section className="stats-strip" style={{ display: 'flex', justifyContent: 'space-between', gap: '8px', width: '100%', marginBottom: '20px' }}>
+        <div className="stat-card-admin" style={{ flex: 1, aspectRatio: '1/1', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', padding: '8px', borderRadius: '12px' }}>
+          <h3 style={{ fontSize: '10px', marginBottom: '4px', color: '#64748b', textTransform: 'uppercase' }}>Total</h3>
+          <p style={{ fontSize: '24px', fontWeight: '800', margin: 0, color: '#1e293b' }}>{stats.total}</p>
         </div>
-        <div className="stat-card-admin warning">
-          <h3>Active Issues</h3>
-          <p>{stats.pending}</p>
+        <div className="stat-card-admin warning" style={{ flex: 1, aspectRatio: '1/1', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', padding: '8px', borderRadius: '12px' }}>
+          <h3 style={{ fontSize: '10px', marginBottom: '4px', color: '#64748b', textTransform: 'uppercase' }}>Active</h3>
+          <p style={{ fontSize: '24px', fontWeight: '800', margin: 0, color: '#f59e0b' }}>{stats.pending}</p>
         </div>
-        <div className="stat-card-admin success">
-          <h3>Resolved</h3>
-          <p>{stats.resolved}</p>
+        <div className="stat-card-admin success" style={{ flex: 1, aspectRatio: '1/1', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', padding: '8px', borderRadius: '12px' }}>
+          <h3 style={{ fontSize: '10px', marginBottom: '4px', color: '#64748b', textTransform: 'uppercase' }}>Resolved</h3>
+          <p style={{ fontSize: '24px', fontWeight: '800', margin: 0, color: '#10b981' }}>{stats.resolved}</p>
         </div>
       </section>
 
       <section className="admin-content-area">
-        <div className="content-header">
-          <h2>Complaint Log</h2>
-          <div className="tab-pills">
+        <div className="content-header" style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', justifyContent: 'space-between', alignItems: 'center' }}>
+          <h2 style={{ fontSize: '18px', margin: 0, whiteSpace: 'nowrap' }}>Complaint Lists</h2>
+          <div className="tab-pills" style={{ display: 'flex', flexWrap: 'nowrap', overflowX: 'auto' }}>
             <button className={activeTab === 'all' ? 'active' : ''} onClick={() => setActiveTab('all')}>All</button>
             <button className={activeTab === 'pending' ? 'active' : ''} onClick={() => setActiveTab('pending')}>Pending</button>
             <button className={activeTab === 'resolved' ? 'active' : ''} onClick={() => setActiveTab('resolved')}>Resolved</button>
@@ -147,7 +150,7 @@ const AdminDashboard = () => {
         </div>
 
         <div className="table-wrapper">
-          <table className="modern-table">
+          <table className="modern-table" style={{ whiteSpace: 'nowrap' }}>
             <thead>
               <tr>
                 <th>ID</th>
@@ -186,7 +189,7 @@ const AdminDashboard = () => {
                   </td>
                   <td>
                     <div className="update-cell">
-                      <span>{item.last_updated_by_name || 'New'}</span>
+                      <span>{item.history && item.history.length > 0 ? item.history[item.history.length - 1].updated_by : 'System'}</span>
                       <small>{item.updated_at ? new Date(item.updated_at).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' }) : '-'}</small>
                     </div>
                   </td>
@@ -201,14 +204,20 @@ const AdminDashboard = () => {
   );
 
   const renderAnalytics = () => {
-    const statusData = [
-      { name: 'Assigned', value: issues.filter(i => i.status === 'Assigned').length },
-      { name: 'In Progress', value: issues.filter(i => i.status === 'In Progress').length },
-      { name: 'Resolved', value: issues.filter(i => i.status === 'Resolved').length },
-      { name: 'New', value: issues.filter(i => i.status === 'Submitted').length },
-    ].filter(d => d.value > 0);
+    const statusCounts = {};
+    issues.forEach(i => {
+      const s = i.status || 'Unknown';
+      const displayStatus = s === 'Submitted' ? 'New' : s;
+      statusCounts[displayStatus] = (statusCounts[displayStatus] || 0) + 1;
+    });
+    const statusData = Object.entries(statusCounts).map(([name, value]) => ({ name, value }));
 
-    const typeData = Object.entries(stats.byType || {}).map(([name, value]) => ({ name: t(name), value }));
+    const typeDataMap = {};
+    issues.forEach(i => {
+      const tName = i.issue_type || 'Unknown';
+      typeDataMap[tName] = (typeDataMap[tName] || 0) + 1;
+    });
+    const typeData = Object.entries(typeDataMap).map(([name, value]) => ({ name: t(name) || name, value }));
 
     return (
       <section className="admin-content-area animate-fade-in">
@@ -263,7 +272,7 @@ const AdminDashboard = () => {
   };
 
   const renderQRManager = () => {
-    const qrUrl = `http://${window.location.hostname}:5173/report?area_id=${encodeURIComponent(qrArea)}`;
+    const qrUrl = `${window.location.origin}/report?area_id=${encodeURIComponent(qrArea)}`;
 
     const downloadQR = () => {
       const canvas = document.getElementById("qr-gen-canvas");
@@ -344,7 +353,7 @@ const AdminDashboard = () => {
         </div>
 
         {!selectedWorker ? (
-          <div className="worker-list">
+          <div className="worker-list" style={{ gap: '8px' }}>
             {workers.length > 0 ? workers.map(w => (
               <div key={w} className="card-admin-details worker-card" onClick={() => setSelectedWorker(w)}>
                 <div className="worker-info">
@@ -362,7 +371,7 @@ const AdminDashboard = () => {
           <div className="worker-detail-view">
             <h3 className="worker-name-title">Tasks for {selectedWorker}</h3>
             <div className="table-wrapper">
-              <table className="modern-table">
+              <table className="modern-table" style={{ whiteSpace: 'nowrap' }}>
                 <thead>
                   <tr>
                     <th>ID</th>
@@ -408,7 +417,7 @@ const AdminDashboard = () => {
           <div className="legend-item"><span className="dot yellow"></span> In Progress</div>
           <div className="legend-item"><span className="dot green"></span> {t('resolved')}</div>
         </div>
-        <div className="map-view-full card" style={{ height: '600px', borderRadius: '20px', overflow: 'hidden', zIndex: 1 }}>
+        <div className="map-view-full card" style={{ aspectRatio: '1/1', maxHeight: '400px', width: '100%', borderRadius: '20px', overflow: 'hidden', zIndex: 1, margin: '0 auto' }}>
           <MapContainer center={cityCenter} zoom={13} maxZoom={20} style={{ height: '100%', width: '100%' }}>
             <LayersControl position="topright">
               <LayersControl.BaseLayer checked name="Google Roadmap">
@@ -478,7 +487,7 @@ const AdminDashboard = () => {
   const fetchAdmins = async () => {
     const token = localStorage.getItem('adminToken');
     try {
-      const res = await fetch(`http://${window.location.hostname}:5000/api/admin/list`, {
+      const res = await fetch(`${API_BASE}/api/admin/list`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (res.ok) setAdmins(await res.json());
@@ -489,7 +498,7 @@ const AdminDashboard = () => {
     e.preventDefault();
     const token = localStorage.getItem('adminToken');
     try {
-      const res = await fetch(`http://${window.location.hostname}:5000/api/admin/create`, {
+      const res = await fetch(`${API_BASE}/api/admin/create`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
@@ -638,35 +647,53 @@ const AdminDashboard = () => {
       </nav>
 
       <main className="admin-main">
-        <header className="admin-header-sleek">
-          <div className="header-left">
-            <div className="search-container-modern">
-              <Search size={18} className="search-icon-dim" />
-              <input 
-                type="text" 
-                placeholder={t('search_placeholder')}
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-              {searchTerm && (
-                <div className="search-stat-mini">
-                  {filteredComplaints.length}
-                </div>
-              )}
-            </div>
-          </div>
+        <header className="admin-header-sleek" style={{ flexDirection: 'column', alignItems: 'flex-start' }}>
+          {currentView !== 'overview' && (
+            <button 
+              onClick={() => setCurrentView('overview')} 
+              style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'transparent', border: 'none', cursor: 'pointer', color: '#64748b', fontWeight: '600', padding: 0 }}
+            >
+              <ChevronLeft size={20} /> {t('back') || 'Back'}
+            </button>
+          )}
 
-          <div className="header-right">
-            <div className="header-controls">
-              <div className="profile-pill-compact">
-                <div className="avatar-circle">A</div>
-                <div className="profile-text">
-                  <span className="p-name">Admin</span>
-                  <span className="p-role">{t('system_control') || 'Control'}</span>
+          {currentView === 'overview' && (
+            <>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <div className="avatar-circle">A</div>
+                  <div className="profile-text">
+                    <span className="p-name">Admin</span>
+                    <span className="p-role">{t('system_control') || 'Control'}</span>
+                  </div>
+                </div>
+                <button 
+                  onClick={() => { localStorage.removeItem('adminToken'); localStorage.removeItem('admin'); navigate('/'); }}
+                  style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'transparent', color: '#ef4444', border: 'none', fontWeight: '700', cursor: 'pointer' }}
+                >
+                  <LogOut size={18} />
+                  <span style={{ fontSize: '13px' }}>{t('logout') || 'Logout'}</span>
+                </button>
+              </div>
+
+              <div style={{ width: '100%', display: 'flex', marginTop: '16px' }}>
+                <div className="search-container-modern" style={{ width: '100%' }}>
+                  <Search size={18} className="search-icon-dim" />
+                  <input 
+                    type="text" 
+                    placeholder={t('search_placeholder')}
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
+                  {searchTerm && (
+                    <div className="search-stat-mini">
+                      {filteredIssues.length}
+                    </div>
+                  )}
                 </div>
               </div>
-            </div>
-          </div>
+            </>
+          )}
         </header>
 
         {currentView === 'overview' && renderOverview()}

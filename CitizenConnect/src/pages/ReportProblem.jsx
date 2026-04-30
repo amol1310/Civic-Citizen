@@ -4,6 +4,8 @@ import { ChevronLeft, MapPin, Camera, Loader2, Droplets, Zap, Trash2, Road, Wren
 import { useLanguage } from '../context/LanguageContext';
 import './ReportProblem.css';
 
+const API_BASE = import.meta.env.PROD ? '' : `http://${window.location.hostname}:5000`;
+
 const ReportProblem = () => {
   const navigate = useNavigate();
   
@@ -20,7 +22,33 @@ const ReportProblem = () => {
 
   useEffect(() => {
     const user = localStorage.getItem('user');
-    if (!user) navigate('/');
+    if (!user) {
+      navigate('/');
+      return;
+    }
+
+    // Extract area_id from QR Code URL
+    const params = new URLSearchParams(window.location.search);
+    const areaId = params.get('area_id');
+    if (areaId) {
+      setAddress(areaId);
+      localStorage.setItem('scannedArea', areaId);
+    }
+
+    // Auto-fetch GPS Location on page load
+    if (navigator.geolocation) {
+      setLocating(true);
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          setLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+          setLocating(false);
+        },
+        (err) => {
+          console.warn('Auto GPS Failed:', err.message);
+          setLocating(false);
+        }
+      );
+    }
   }, [navigate]);
 
   const handleGetLocation = () => {
@@ -79,7 +107,7 @@ const ReportProblem = () => {
     validFiles.forEach(f => formData.append('images', f));
 
     try {
-      const res = await fetch(`http://${window.location.hostname}:5000/api/complaints`, { method: 'POST', body: formData });
+      const res = await fetch(`${API_BASE}/api/complaints`, { method: 'POST', body: formData });
       if (res.ok) {
       alert('✅ ' + (t('submit_report') || 'Reported Successfully!'));
         navigate('/dashboard');

@@ -4,6 +4,8 @@ import { ChevronLeft, MapPin, User, Phone, Calendar, Briefcase, Star, CheckCircl
 import { useLanguage } from '../context/LanguageContext';
 import './IssueDetails.css';
 
+const API_BASE = import.meta.env.PROD ? '' : `http://${window.location.hostname}:5000`;
+
 const IssueDetails = () => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -21,7 +23,7 @@ const IssueDetails = () => {
 
   const fetchIssue = async () => {
     try {
-      const res = await fetch(`http://${window.location.hostname}:5000/api/complaints/${id}`);
+      const res = await fetch(`${API_BASE}/api/complaints/${id}`);
       if (res.ok) {
         const data = await res.json();
         setIssue(data);
@@ -43,7 +45,7 @@ const IssueDetails = () => {
         statusToSave = 'Assigned';
       }
 
-      const res = await fetch(`http://${window.location.hostname}:5000/api/complaints/${id}`, {
+      const res = await fetch(`${API_BASE}/api/complaints/${id}`, {
         method: 'PATCH',
         headers: { 
           'Content-Type': 'application/json',
@@ -57,7 +59,7 @@ const IssueDetails = () => {
       });
       if (res.ok) {
         alert('Changes saved successfully!');
-        fetchIssue();
+        navigate('/admin');
       } else {
         alert('Failed to update. Check your session.');
       }
@@ -153,7 +155,7 @@ const IssueDetails = () => {
                 if (!img.startsWith('http')) {
                   // If it's a relative path like /uploads/abc.jpg, remove the leading slash before appending
                   const cleanPath = img.startsWith('/') ? img.substring(1) : img;
-                  src = `http://${window.location.hostname}:5000/${cleanPath}`;
+                  src = API_BASE ? `${API_BASE}/${cleanPath}` : `/${cleanPath}`;
                 }
                 return (
                   <img 

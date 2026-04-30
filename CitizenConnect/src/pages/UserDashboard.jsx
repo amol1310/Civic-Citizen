@@ -5,6 +5,8 @@ import { io } from 'socket.io-client';
 import { useLanguage } from '../context/LanguageContext';
 import './UserDashboard.css';
 
+const API_BASE = import.meta.env.PROD ? '' : `http://${window.location.hostname}:5000`;
+
 const UserDashboard = () => {
   const navigate = useNavigate();
   const { t, lang, setLang } = useLanguage();
@@ -25,7 +27,7 @@ const UserDashboard = () => {
     setQrArea(localStorage.getItem('scannedArea') || '');
     fetchUserComplaints(parsedUser._id || parsedUser.id);
 
-    const socket = io(`http://${window.location.hostname}:5000`);
+    const socket = io(API_BASE || '/');
     socket.on('status_updated', () => fetchUserComplaints(parsedUser._id || parsedUser.id));
     return () => socket.disconnect();
   }, [navigate]);
@@ -37,7 +39,7 @@ const UserDashboard = () => {
 
   const fetchUserComplaints = async (userId) => {
     try {
-      const res = await fetch(`http://${window.location.hostname}:5000/api/users/my-complaints?user_id=${userId}`);
+      const res = await fetch(`${API_BASE}/api/users/my-complaints?user_id=${userId}`);
       if (res.ok) {
         const data = await res.json();
         setComplaints(data.sort((a, b) => b.id - a.id));

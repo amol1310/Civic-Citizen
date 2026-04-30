@@ -87,7 +87,7 @@ app.post('/api/auth/send-otp', async (req, res) => {
   if (twilioClient) {
     try {
       await twilioClient.messages.create({
-        body: `Your CitizenConnect OTP is ${otp}`,
+        body: `Welcome to Apla Sevak Portal! Your OTP is ${otp}. Do not share this with anyone.तुमच्या तक्रारीबद्दल क्षमस्व. तुमची समस्या लवकरच दूर होईल - \nआपला ऋषिकेश प्रदीप जैस्वाल (शिवसेना नगरसेवक प्रभाग क्रमांक १५)`,
         from: process.env.TWILIO_PHONE_NUMBER,
         to: `+91${mobile_number}`
       });
@@ -350,8 +350,15 @@ app.post('/api/admin/create', adminAuth, async (req, res) => {
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
+// --- Production Frontend Serving ---
+app.use(express.static(path.join(__dirname, '../dist')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../dist', 'index.html'));
+});
+
 // Start Server
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, '0.0.0.0', () => {
-  console.log(`Backend server running on http://127.0.0.1:${PORT}`);
+  console.log(`Backend server running on port ${PORT}`);
 });
