@@ -1,0 +1,122 @@
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  margin: 20px;
+  border-radius: 16px;
+}
+
+.login-header {
+  background: var(--primary-blue);
+  color: white;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+}
+
+.logo-placeholder {
+  width: 24px;
+  height: 24px;
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.logo-circle {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  position: absolute;
+}
+.logo-red { background: #ef4444; top: 0; left: 0; }
+.logo-green { background: #10b981; top: 0; right: 0; }
+.logo-blue { background: #3b82f6; bottom: 0; left: 0; }
+.logo-yellow { background: #f59e0b; bottom: 0; right: 0; }
+
+.login-header h2 {
+  color: white;
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  font-style: italic;
+}
+
+.input-group {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.input-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #64748b;
+}
+
+.with-icon {
+  padding-left: 44px;
+}
+
+.otp-group {
+  display: flex;
+  gap: 12px;
+}
+
+.otp-input-wrapper {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.btn-get-otp {
+  background: #3b6099;
+  color: white;
+  border-radius: var(--radius-md);
+  padding: 0 16px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.btn-get-otp:hover {
+  background: #2a4b7c;
+}
+
+.login-footer {
+  background: var(--primary-blue);
+  color: white;
+  padding: 20px;
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+}
+
+.login-footer h4 {
+  color: white;
+  text-align: center;
+  margin-bottom: 16px;
+  font-size: 15px;
+}
+
+.footer-icons {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.footer-icon-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  opacity: 0.9;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.footer-icon-item:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+}

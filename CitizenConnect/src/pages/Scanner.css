@@ -1,0 +1,88 @@
+.scanner-page {
+  min-height: 100vh;
+  background: #0f172a;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden !important;
+  width: 100%;
+}
+
+.scanner-header {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(10px);
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+}
+
+.scanner-header h1 {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.scanner-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 80px;
+}
+
+#reader {
+  width: 100% !important;
+  max-width: 400px;
+  border: none !important;
+  background: transparent !important;
+}
+
+#reader__status_span {
+    display: none;
+}
+
+#reader video {
+    border-radius: 20px;
+    object-fit: cover;
+}
+
+.scanner-overlay-text {
+  margin-top: 30px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: #94a3b8;
+}
+
+.scanner-footer {
+  padding: 40px 20px;
+  text-align: center;
+  font-size: 14px;
+  color: #64748b;
+}
+
+/* Fix for library generated styles */
+#reader__dashboard_section_csr button {
+    background: #2563eb !important;
+    color: white !important;
+    border: none !important;
+    padding: 10px 20px !important;
+    border-radius: 8px !important;
+    margin: 10px !important;
+    cursor: pointer;
+}
+
+#reader__camera_selection {
+    padding: 8px !important;
+    border-radius: 8px !important;
+    background: #1e293b !important;
+    color: white !important;
+    border: 1px solid #334155 !important;
+}

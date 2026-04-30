@@ -1,0 +1,360 @@
+{
+  "users": [
+    {
+      "id": "1777453528407",
+      "name": "amol",
+      "mobile": "1234567890",
+      "role": "citizen"
+    },
+    {
+      "id": "1777454188789",
+      "name": "amol",
+      "mobile": "2345678888",
+      "role": "citizen"
+    },
+    {
+      "id": "1777460927703",
+      "name": "AMol Mankape",
+      "mobile": "8149467676",
+      "role": "citizen"
+    },
+    {
+      "id": "1777463042604",
+      "name": "AMol Mankape",
+      "mobile": "6666666666",
+      "role": "citizen"
+    },
+    {
+      "id": "1777488242968",
+      "name": "aaa77",
+      "mobile": "7777777777",
+      "role": "citizen"
+    },
+    {
+      "id": "1777488613335",
+      "name": "22222",
+      "mobile": "2222222222",
+      "role": "citizen"
+    }
+  ],
+  "complaints": [
+    {
+      "id": "1001",
+      "user_id": "1777454188789",
+      "issue_type": "Drainage Issue",
+      "description": "Test",
+      "location": {
+        "lat": 0,
+        "lng": 0,
+        "address": "Gulmandi"
+      },
+      "image_urls": [
+        "https://via.placeholder.com/600x400?text=Mock+Image+1777454208394"
+      ],
+      "status": "In Progress",
+      "priority": "Medium",
+      "assignedTo": null,
+      "created_at": "2026-04-29T09:16:48.395Z",
+      "updated_at": "2026-04-29T11:49:49.527Z"
+    },
+    {
+      "id": "1002",
+      "user_id": "1777453528407",
+      "issue_type": "Drainage Issue",
+      "description": "Test",
+      "location": {
+        "lat": 0,
+        "lng": 0,
+        "address": "test"
+      },
+      "image_urls": [
+        "https://via.placeholder.com/600x400?text=Mock+Image+1777454383775"
+      ],
+      "status": "Resolved",
+      "priority": "Medium",
+      "assignedTo": "test",
+      "created_at": "2026-04-29T09:19:43.776Z",
+      "updated_at": "2026-04-29T09:20:37.882Z"
+    },
+    {
+      "id": "1003",
+      "user_id": "1777460927703",
+      "issue_type": "Water Supply",
+      "description": "Test",
+      "location": {
+        "lat": 19.87872843481439,
+        "lng": 75.38945641767505,
+        "address": "CHikalthana"
+      },
+      "image_urls": [
+        "https://via.placeholder.com/600x400?text=Mock+Image+1777460959814"
+      ],
+      "status": "Resolved",
+      "priority": "High",
+      "assignedTo": "Nikhil",
+      "created_at": "2026-04-29T11:09:19.815Z",
+      "updated_at": "2026-04-29T11:10:51.516Z"
+    },
+    {
+      "id": "1004",
+      "user_id": "1777463042604",
+      "issue_type": "Drainage Issue",
+      "description": "Test",
+      "location": {
+        "lat": 19.878696902871106,
+        "lng": 75.38940255467317,
+        "address": "Gulmandi"
+      },
+      "image_urls": [
+        "https://via.placeholder.com/600x400?text=Mock+Image+1777463068819"
+      ],
+      "status": "Resolved",
+      "priority": "Medium",
+      "assignedTo": null,
+      "created_at": "2026-04-29T11:44:28.820Z",
+      "updated_at": "2026-04-29T11:46:33.303Z"
+    },
+    {
+      "id": "1005",
+      "user_id": "1777463042604",
+      "issue_type": "Garbage",
+      "description": "Test",
+      "location": {
+        "lat": 0,
+        "lng": 0,
+        "address": "Test"
+      },
+      "image_urls": [
+        "https://via.placeholder.com/600x400?text=Mock+Image+1777465147133"
+      ],
+      "status": "Resolved",
+      "priority": "High",
+      "assignedTo": "",
+      "created_at": "2026-04-29T12:19:07.133Z",
+      "updated_at": "2026-04-29T12:19:39.734Z"
+    },
+    {
+      "id": "1006",
+      "user_id": "1777463042604",
+      "issue_type": "रस्ता दुरुस्ती",
+      "description": "test",
+      "location": {
+        "lat": 0,
+        "lng": 0,
+        "address": "qwert"
+      },
+      "image_urls": [
+        "https://via.placeholder.com/600x400?text=Mock+Image+1777465713148"
+      ],
+      "status": "In Progress",
+      "priority": "Medium",
+      "assignedTo": "",
+      "created_at": "2026-04-29T12:28:33.149Z",
+      "updated_at": "2026-04-29T12:35:18.085Z"
+    },
+    {
+      "id": "1007",
+      "user_id": "1777463042604",
+      "issue_type": "Drainage Issue",
+      "description": "test",
+      "location": {
+        "lat": 19.878697605667064,
+        "lng": 75.38940288264463,
+        "address": ""
+      },
+      "image_urls": [
+        "https://via.placeholder.com/600x400?text=Mock+Image+1777466042146"
+      ],
+      "status": "Submitted",
+      "priority": "Medium",
+      "assignedTo": null,
+      "created_at": "2026-04-29T12:34:02.146Z",
+      "updated_at": "2026-04-29T12:34:02.146Z"
+    },
+    {
+      "id": "1008",
+      "user_id": "1777463042604",
+      "issue_type": "Others",
+      "description": "Water TIme Issue",
+      "location": {
+        "lat": 19.88316586908129,
+        "lng": 75.33198154785147,
+        "address": ""
+      },
+      "image_urls": [
+        "https://via.placeholder.com/600x400?text=Mock+Image+1777485074860"
+      ],
+      "status": "Resolved",
+      "priority": "Medium",
+      "assignedTo": "",
+      "created_at": "2026-04-29T17:51:14.861Z",
+      "updated_at": "2026-04-29T18:18:40.885Z",
+      "last_updated_by_name": "System",
+      "history": [
+        {
+          "type": "status_change",
+          "from": "Submitted",
+          "to": "Resolved",
+          "updated_by": "System",
+          "timestamp": "2026-04-29T18:18:40.885Z"
+        }
+      ]
+    },
+    {
+      "id": "1009",
+      "user_id": "1777460927703",
+      "issue_type": "water",
+      "description": "Test",
+      "area_id": "GENERAL",
+      "location": {
+        "lat": 0,
+        "lng": 0,
+        "address": "Test"
+      },
+      "image_urls": [
+        "https://via.placeholder.com/600x400?text=Mock+Image+1777489808673"
+      ],
+      "status": "Submitted",
+      "priority": "Medium",
+      "assignedTo": null,
+      "created_at": "2026-04-29T19:10:08.673Z",
+      "updated_at": "2026-04-29T19:10:08.673Z"
+    },
+    {
+      "id": "1010",
+      "user_id": "1777488242968",
+      "issue_type": "water",
+      "description": "Test",
+      "area_id": "GENERAL",
+      "location": {
+        "lat": 0,
+        "lng": 0,
+        "address": "Test"
+      },
+      "image_urls": [
+        "https://via.placeholder.com/600x400?text=Mock+Image+1777490051762"
+      ],
+      "status": "Submitted",
+      "priority": "Medium",
+      "assignedTo": null,
+      "created_at": "2026-04-29T19:14:11.763Z",
+      "updated_at": "2026-04-29T19:14:11.763Z"
+    },
+    {
+      "id": "1011",
+      "user_id": "1777488242968",
+      "issue_type": "water",
+      "description": "Test",
+      "area_id": "GENERAL",
+      "location": {
+        "lat": 0,
+        "lng": 0,
+        "address": "Test"
+      },
+      "image_urls": [
+        "https://via.placeholder.com/600x400?text=Mock+Image+1777490495695"
+      ],
+      "status": "Submitted",
+      "priority": "Medium",
+      "assignedTo": null,
+      "created_at": "2026-04-29T19:21:35.697Z",
+      "updated_at": "2026-04-29T19:21:35.697Z"
+    },
+    {
+      "id": "1012",
+      "user_id": "1777488242968",
+      "issue_type": "drainage",
+      "description": "Test",
+      "area_id": "GENERAL",
+      "location": {
+        "lat": 0,
+        "lng": 0,
+        "address": "Test"
+      },
+      "image_urls": [
+        "https://via.placeholder.com/600x400?text=Mock+Image+1777491335540",
+        "https://via.placeholder.com/600x400?text=Mock+Image+1777491335540"
+      ],
+      "status": "In Progress",
+      "priority": "High",
+      "assignedTo": "Amol",
+      "created_at": "2026-04-29T19:35:35.541Z",
+      "updated_at": "2026-04-30T04:09:00.644Z",
+      "updated_by_name": "System Admin",
+      "last_updated_by_name": "System Admin",
+      "history": [
+        {
+          "type": "status_change",
+          "from": "Submitted",
+          "to": "In Progress",
+          "updated_by": "System Admin",
+          "timestamp": "2026-04-30T04:09:00.644Z"
+        },
+        {
+          "type": "assignment",
+          "from": null,
+          "to": "Amol",
+          "updated_by": "System Admin",
+          "timestamp": "2026-04-30T04:09:00.644Z"
+        }
+      ]
+    },
+    {
+      "id": "1013",
+      "user_id": "1777463042604",
+      "issue_type": "drainage",
+      "description": "Test",
+      "area_id": "GENERAL",
+      "location": {
+        "lat": 0,
+        "lng": 0,
+        "address": "Test"
+      },
+      "image_urls": [
+        "https://via.placeholder.com/600x400?text=Mock+Image+1777522031100"
+      ],
+      "status": "Submitted",
+      "priority": "Medium",
+      "assignedTo": null,
+      "created_at": "2026-04-30T04:07:11.101Z",
+      "updated_at": "2026-04-30T04:07:11.101Z"
+    }
+  ],
+  "feedback": [
+    {
+      "id": "1777454488066",
+      "complaintId": "1002",
+      "rating": 5,
+      "comment": "",
+      "createdAt": "2026-04-29T09:21:28.066Z"
+    },
+    {
+      "id": "1777463441592",
+      "complaintId": "1004",
+      "rating": 5,
+      "comment": "test ok",
+      "createdAt": "2026-04-29T11:50:41.592Z"
+    }
+  ],
+  "admins": [
+    {
+      "id": "admin_1",
+      "name": "System Admin",
+      "email": "admin@citizen.com",
+      "password": "$2b$10$uElLnWYfKm0xq8pncLraTO3MUPhI8Hq/eBElYVAIwwpskrK2ifdP2",
+      "role": "admin",
+      "status": "active",
+      "created_at": "2026-04-29T00:00:00.000Z"
+    },
+    {
+      "id": "admin_1777486602388",
+      "name": "Amol ",
+      "email": "amol@123",
+      "password": "$2b$10$5RCtQWpEuNOwCMrtd.GeMejFN1vHMnFq2Kxsq3S.2iivn9a7u17qm",
+      "role": "admin",
+      "status": "active",
+      "created_at": "2026-04-29T18:16:42.388Z"
+    }
+  ],
+  "lastId": 1013
+}

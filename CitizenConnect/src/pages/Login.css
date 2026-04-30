@@ -1,0 +1,261 @@
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #4f46e5 0%, #0ea5e9 100%);
+  position: relative;
+  overflow-x: hidden;
+  width: 100%;
+  padding: 20px;
+}
+
+.login-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('https://www.transparenttextures.com/patterns/cubes.png');
+  opacity: 0.1;
+}
+
+.login-container {
+  width: 100%;
+  max-width: 420px;
+  position: relative;
+  z-index: 10;
+}
+
+.lang-selector-top {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-bottom: 12px;
+  color: white;
+}
+
+.lang-selector-top select {
+  background: rgba(255,255,255,0.2);
+  border: 1px solid rgba(255,255,255,0.3);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 8px;
+  width: auto;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.lang-selector-top select option {
+  color: #1e293b;
+}
+
+.login-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 40px;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  text-align: center;
+}
+
+.logo-badge {
+  width: 64px;
+  height: 64px;
+  background: var(--primary);
+  color: white;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.4);
+}
+
+.login-header h1 {
+  font-size: 28px;
+  color: #1e293b;
+  margin-bottom: 4px;
+}
+
+.login-header p {
+  color: #64748b;
+  font-size: 14px;
+  margin-bottom: 32px;
+}
+
+.tab-switcher {
+  display: flex;
+  background: #f1f5f9;
+  padding: 4px;
+  border-radius: 12px;
+  margin-bottom: 32px;
+}
+
+.tab-switcher button {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  background: none;
+  border-radius: 8px;
+  font-weight: 600;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.tab-switcher button.active {
+  background: white;
+  color: var(--primary);
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+}
+
+.input-group {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.input-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+}
+
+.input-group input {
+  padding-left: 44px;
+  background: #f8fafc;
+}
+
+.btn-scan-qr-login {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: white;
+  color: var(--primary);
+  border: 1px solid var(--primary);
+  padding: 12px;
+  border-radius: 12px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-scan-qr-login:hover {
+  background: #eff6ff;
+  transform: translateY(-2px);
+}
+
+.divider-login {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #94a3b8;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.divider-login::before, .divider-login::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.divider-login span {
+  padding: 0 10px;
+}
+
+.btn-login-main {
+  width: 100%;
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 16px;
+  box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
+}
+
+.btn-login-main:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+}
+
+.otp-info {
+  font-size: 14px;
+  color: #64748b;
+  margin-bottom: 16px;
+}
+
+.timer-section {
+  margin-top: 16px;
+  font-size: 13px;
+  color: #64748b;
+}
+
+.btn-text {
+  background: none;
+  border: none;
+  color: var(--primary);
+  font-weight: 600;
+  font-size: 13px;
+  margin-top: 8px;
+  cursor: pointer;
+}
+
+.login-footer {
+  margin-top: 24px;
+  color: rgba(255,255,255,0.8);
+  font-size: 12px;
+  text-align: center;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 480px) {
+  .login-page {
+    padding: 10px;
+    align-items: flex-start;
+    padding-top: 40px;
+  }
+  .login-card {
+    padding: 30px 20px;
+    border-radius: 24px;
+  }
+  .login-header h1 {
+    font-size: 24px;
+  }
+  .tab-switcher button {
+    font-size: 13px;
+    padding: 8px;
+  }
+  .btn-login-main {
+    padding: 16px;
+    font-size: 15px;
+  }
+}
+
+@media (max-height: 700px) {
+  .login-page {
+    align-items: flex-start;
+    overflow-y: auto;
+  }
+}
