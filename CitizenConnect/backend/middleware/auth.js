@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const SECRET_KEY = 'your_super_secret_key'; // In production, use process.env.JWT_SECRET
+const SECRET_KEY = process.env.JWT_SECRET || 'your_super_secret_key';
 
 const adminAuth = (req, res, next) => {
   try {
