@@ -63,7 +63,7 @@ const twilioClient = (process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage, limits: { fileSize: 5 * 1024 * 1024 } });
 
-const otpStore = new Map(); 
+const otpStore = new Map();
 
 // --- Socket.IO ---
 io.on('connection', (socket) => {
@@ -76,7 +76,7 @@ io.on('connection', (socket) => {
 // --- Auth Routes ---
 app.post('/api/auth/send-otp', async (req, res) => {
   const { mobile_number, name } = req.body;
-  
+
   if (!mobile_number || !/^[0-9]{10}$/.test(mobile_number)) {
     return res.status(400).json({ error: 'Please enter a valid 10-digit mobile number' });
   }
@@ -86,11 +86,17 @@ app.post('/api/auth/send-otp', async (req, res) => {
 
   if (twilioClient) {
     try {
+      // await twilioClient.messages.create({
+      //   body: `Welcome to Apla Sevak Portal! Your OTP is ${otp}. Do not share this with anyone.तुमच्या तक्रारीबद्दल क्षमस्व. तुमची समस्या लवकरच दूर होईल - \nआपला ऋषिकेश प्रदीप जैस्वाल (शिवसेना नगरसेवक प्रभाग क्रमांक १५)`,
+      //   from: process.env.TWILIO_PHONE_NUMBER,
+      //   to: `+91${mobile_number}`
+      // });
       await twilioClient.messages.create({
         body: `Welcome to Apla Sevak Portal! Your OTP is ${otp}. Do not share this with anyone.तुमच्या तक्रारीबद्दल क्षमस्व. तुमची समस्या लवकरच दूर होईल - \nआपला ऋषिकेश प्रदीप जैस्वाल (शिवसेना नगरसेवक प्रभाग क्रमांक १५)`,
         from: process.env.TWILIO_PHONE_NUMBER,
         to: `+91${mobile_number}`
       });
+
     } catch (err) {
       console.error('Twilio Error:', err);
       return res.status(500).json({ error: 'Failed to send real OTP via Twilio.' });
@@ -126,7 +132,7 @@ app.post('/api/auth/admin-login', async (req, res) => {
   const admin = await Admin.findOne({ email });
 
   if (!admin) return res.status(404).json({ error: 'Admin not found' });
-  
+
   const isMatch = await bcrypt.compare(password, admin.password);
   if (!isMatch) return res.status(401).json({ error: 'Invalid credentials' });
 
@@ -165,7 +171,7 @@ const handleImageUpload = (file) => {
         const fs = require('fs');
         const filename = `${Date.now()}-${Math.round(Math.random() * 1E9)}.jpg`;
         const filePath = path.join(__dirname, 'uploads', filename);
-        
+
         if (!fs.existsSync(path.join(__dirname, 'uploads'))) {
           fs.mkdirSync(path.join(__dirname, 'uploads'));
         }
@@ -182,7 +188,7 @@ const handleImageUpload = (file) => {
 app.post('/api/complaints', upload.array('images', 3), async (req, res) => {
   try {
     let { user_id, issue_type, description, lat, lng, address } = req.body;
-    
+
     // Safety Check: Prevent "undefined" string from crashing Mongoose
     if (!user_id || user_id === 'undefined' || user_id === 'null') {
       user_id = null;
@@ -204,10 +210,10 @@ app.post('/api/complaints', upload.array('images', 3), async (req, res) => {
       user_id: user_id || null,
       issue_type,
       description,
-      location: { 
-        lat: parseFloat(lat) || 0, 
-        lng: parseFloat(lng) || 0, 
-        address 
+      location: {
+        lat: parseFloat(lat) || 0,
+        lng: parseFloat(lng) || 0,
+        address
       },
       image_urls,
       history: [{ type: 'status_change', from: 'None', to: 'Submitted', updated_by: 'System' }]
@@ -257,7 +263,7 @@ app.get('/api/complaints/:id', async (req, res) => {
   try {
     const complaint = await Complaint.findOne({ id: req.params.id }).populate('user_id');
     if (!complaint) return res.status(404).json({ error: 'Not found' });
-    
+
     const feedback = await Feedback.findOne({ complaintId: req.params.id });
     const result = {
       ...complaint._doc,
@@ -295,7 +301,7 @@ app.patch('/api/complaints/:id', adminAuth, async (req, res) => {
       complaint.history.push({ type: 'assignment', from: oldWorker, to: assignedTo, updated_by: req.admin.name });
     }
     if (priority) complaint.priority = priority;
-    
+
     complaint.updated_at = Date.now();
     await complaint.save();
 
@@ -317,7 +323,7 @@ app.get('/api/admin/stats', adminAuth, async (req, res) => {
     const total = await Complaint.countDocuments();
     const resolved = await Complaint.countDocuments({ status: 'Resolved' });
     const pending = total - resolved;
-    
+
     // Aggregate by type
     const byTypeData = await Complaint.aggregate([
       { $group: { _id: "$issue_type", count: { $sum: 1 } } }
@@ -344,7 +350,7 @@ app.post('/api/admin/create', adminAuth, async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const newAdmin = await Admin.create({ name, email, password: hashedPassword });
-    
+
     const { password: _, ...adminInfo } = newAdmin._doc;
     res.status(201).json(adminInfo);
   } catch (err) { res.status(500).json({ error: err.message }); }
