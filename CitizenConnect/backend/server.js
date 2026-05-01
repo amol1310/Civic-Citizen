@@ -8,6 +8,7 @@ const cors = require('cors');
 const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
 const twilio = require('twilio');
+const nodemailer = require('nodemailer');
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -23,6 +24,15 @@ const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/citizencon
 mongoose.connect(MONGO_URI)
   .then(() => console.log('✅ Connected to MongoDB'))
   .catch(err => console.error('❌ MongoDB Connection Error:', err));
+
+// --- Email Configuration ---
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.ADMIN_EMAIL || 'your-admin@gmail.com',
+    pass: process.env.EMAIL_PASSWORD || 'your-app-password'
+  }
+});
 
 const app = express();
 const server = http.createServer(app);
@@ -159,6 +169,15 @@ app.post('/api/complaints', upload.array('images', 3), async (req, res) => {
       image_urls,
       history: [{ type: 'status_change', from: 'None', to: 'Submitted', updated_by: 'System' }]
     });
+
+    // Send Email Notification
+    const mailOptions = {
+      from: process.env.ADMIN_EMAIL,
+      to: process.env.ADMIN_NOTIFY_EMAIL || 'admin@citizen.com',
+      subject: `🚨 New Complaint: ${issue_type}`,
+      html: `<h2>New Civic Complaint Received</h2><p><b>ID:</b> #${legacyId}</p><p><b>Type:</b> ${issue_type}</p><p><b>Address:</b> ${address}</p>`
+    };
+    transporter.sendMail(mailOptions).catch(err => console.error('Email Error:', err.message));
 
     const fullComplaint = await Complaint.findById(complaint._id).populate('user_id');
     io.emit('new_complaint', fullComplaint);
