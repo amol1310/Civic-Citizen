@@ -1,3 +1,4 @@
+/* eslint-env node */
 require('dotenv').config();
 const express = require('express');
 const path = require('path');
@@ -7,7 +8,6 @@ const cors = require('cors');
 const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
 const twilio = require('twilio');
-const nodemailer = require('nodemailer');
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -23,15 +23,6 @@ const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/citizencon
 mongoose.connect(MONGO_URI)
   .then(() => console.log('✅ Connected to MongoDB'))
   .catch(err => console.error('❌ MongoDB Connection Error:', err));
-
-// --- Email Configuration ---
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.ADMIN_EMAIL || 'your-admin@gmail.com',
-    pass: process.env.EMAIL_PASSWORD || 'your-app-password'
-  }
-});
 
 const app = express();
 const server = http.createServer(app);
